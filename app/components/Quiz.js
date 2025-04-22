@@ -505,13 +505,6 @@ export default function Quiz({ questions }) {
           {questionStats.length > 0 && (
             <QuizStatistics questionStats={questionStats} questions={questions} />
           )}
-          
-          {/* 공유 버튼 컴포넌트 */}
-          <ShareButtons 
-            score={correctCount} 
-            totalQuestions={questions.length} 
-            nickname={nickname} 
-          />
         </div>
       )}
       
@@ -530,6 +523,12 @@ export default function Quiz({ questions }) {
         onSubmit={handleNicknameSubmit}
         isSubmitting={isSubmitting}
       />
+      {/* 공유 버튼 컴포넌트 */}
+      <ShareButtons 
+            score={correctCount} 
+            totalQuestions={questions.length} 
+            nickname={nickname} 
+          />
     </div>
   );
 }
