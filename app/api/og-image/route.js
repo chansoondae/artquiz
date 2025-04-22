@@ -1,5 +1,5 @@
 // /app/api/og-image/route.js
-import { ImageResponse } from 'next/server';
+import { ImageResponse } from 'next/og'; // Updated import path for Next.js 14+
 
 export const runtime = 'edge';
 
