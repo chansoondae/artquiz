@@ -17,7 +17,7 @@ export const metadata = {
     description: '유명 미술 작품과 화가들에 관한 재미있는 퀴즈. 당신의 미술 지식을 테스트하고 랭킹에 도전해보세요!',
     images: ['/images/impression.png'],
   },
-  authors: [{ name: '당신의 이름 또는 회사명' }],
+  authors: ['아트프렌즈'],
   keywords: ['미술', '퀴즈', '미술작품', '화가', '미술퀴즈', '예술', '명화'],
 };
 

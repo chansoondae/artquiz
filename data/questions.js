@@ -44,7 +44,7 @@ export const quizQuestions = [
     question: "반 고흐가 '별이 빛나는 밤'을 그릴 때 머물던 장소는 어디일까?",
     image: "/images/starrynight.png", // .png 확장자로 변경
     options: [
-      { id: "A", text: "아를의 붉은 집" },
+      { id: "A", text: "아를의 노란 집" },
       { id: "B", text: "파리의 스튜디오" },
       { id: "C", text: "생레미 드 프로방스 정신병원" },
       { id: "D", text: "오베르 쉬르 우아즈 여관" },
