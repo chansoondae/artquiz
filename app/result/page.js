@@ -209,35 +209,6 @@ export default function ResultPage() {
         )}
       </div>
       
-      <div className="p-5 mb-8 bg-white bg-opacity-90 rounded-xl shadow-md border border-fuchsia-100">
-        <h3 className="font-semibold text-lg mb-3 text-fuchsia-800">Firebase 권한 설정 도움말</h3>
-        <p className="text-sm text-gray-700 mb-3">
-          이 페이지가 제대로 작동하려면 Firebase의 보안 규칙에서 다음 컬렉션에 대한 읽기 권한이 필요합니다:
-        </p>
-        <ul className="list-disc pl-5 text-sm text-gray-700 mb-4">
-          <li className="mb-1"><code className="bg-gray-100 px-1 py-0.5 rounded">quizResults</code> - 퀴즈 결과 데이터</li>
-          <li className="mb-1"><code className="bg-gray-100 px-1 py-0.5 rounded">statistics/questionStats</code> - 문제별 통계 데이터</li>
-        </ul>
-        <p className="text-sm text-gray-700">
-          Firebase 콘솔에서 보안 규칙을 다음과 같이 업데이트하면 문제가 해결될 수 있습니다:
-        </p>
-        <pre className="text-xs bg-gray-100 p-3 rounded mt-2 overflow-x-auto">
-{`rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /quizResults/{document=**} {
-      allow read;  // 읽기 권한 허용
-      allow write: if true;  // 모든 사용자 쓰기 가능
-    }
-    match /statistics/{document=**} {
-      allow read;  // 읽기 권한 허용
-      allow write: if true;  // 모든 사용자 쓰기 가능
-    }
-  }
-}`}
-        </pre>
-      </div>
-      
       <div className="text-center">
         <a 
           href="/"
