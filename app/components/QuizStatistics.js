@@ -1,8 +1,8 @@
 // /components/QuizStatistics.js
 import { useState } from 'react';
 
-export default function QuizStatistics({ questionStats, questions }) {
-  const [showStats, setShowStats] = useState(false);
+export default function QuizStatistics({ questionStats, questions, initialExpanded = false }) {
+  const [showStats, setShowStats] = useState(initialExpanded);
   
   // 정답률 계산 함수
   const calculateCorrectRate = (stat) => {

@@ -14,6 +14,8 @@ export default function ResultPage() {
   const [questions, setQuestions] = useState(quizQuestions);  // 퀴즈 질문을 여기서 초기화
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalNum, setTotalNum] = useState(0); // 전체 참여자
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,8 +50,7 @@ export default function ResultPage() {
           const perfectScorersQuery = query(
             collection(db, 'quizResults'),
             where('score', '==', totalQuestions),
-            orderBy('timestamp', 'desc'),
-            limit(20)
+            orderBy('timestamp', 'desc')
           );
           
           const perfectSnapshot = await getDocs(perfectScorersQuery);
@@ -73,6 +74,13 @@ export default function ResultPage() {
             const stats = statsDoc.data().stats || [];
             console.log("가져온 통계 데이터:", stats);
             setQuestionStats(stats);
+
+            // 첫 번째 questionId 저장
+            if (stats.length > 0) {
+              const totalNum = stats[0].totalAttempts;
+              console.log("전체 참여자수:", totalNum);
+              setTotalNum(totalNum);
+            }
           } else {
             console.log("통계 문서가 없습니다.");
           }
@@ -141,7 +149,7 @@ export default function ResultPage() {
           퀴즈 통계
         </h2>
         {hasQuizStats ? (
-          <QuizStatistics questionStats={questionStats} questions={questions} />
+          <QuizStatistics questionStats={questionStats} questions={questions} initialExpanded ={true}/>
         ) : (
           <div className="bg-white bg-opacity-80 backdrop-blur-sm p-5 sm:p-6 rounded-xl shadow-md border border-fuchsia-100">
             <p className="text-gray-600 italic">통계 데이터를 불러올 수 없습니다. 권한이 필요하거나 아직 데이터가 없을 수 있습니다.</p>
@@ -151,37 +159,29 @@ export default function ResultPage() {
       
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-6 text-fuchsia-800 border-b border-fuchsia-200 pb-2">
-          인기 순위
-        </h2>
-        {topScorers.length > 0 ? (
-          <TopScorersBoard 
-            topScorers={topScorers} 
-            totalQuestions={questions.length} 
-          />
-        ) : (
-          <div className="bg-white bg-opacity-80 backdrop-blur-sm p-5 sm:p-6 rounded-xl shadow-md border border-fuchsia-100">
-            <p className="text-gray-600 italic">순위 데이터를 불러올 수 없습니다. 권한이 필요하거나 아직 등록된 퀴즈 결과가 없을 수 있습니다.</p>
-            <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
-              <p className="text-sm text-yellow-800">
-                <strong>도움말</strong>: Firebase 규칙에서 quizResults 컬렉션에 대한 읽기 권한이 필요합니다.
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6 text-fuchsia-800 border-b border-fuchsia-200 pb-2">
-          만점자 명단
+          만점자 명단 {perfectScorers.length}명 / {totalNum}명 
+          {totalNum > 0 && (
+            <span className="text-fuchsia-600 ml-1">
+              (비율: {((perfectScorers.length / totalNum) * 100).toFixed(1)}%)
+            </span>
+          )}
         </h2>
         {perfectScorers.length > 0 ? (
           <div className="bg-white bg-opacity-80 backdrop-blur-sm p-5 sm:p-6 rounded-xl shadow-md border border-fuchsia-100">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {perfectScorers.map((scorer) => {
-                // timestamp가 있고 toDate 메서드가 있는지 확인
-                const date = scorer.timestamp && typeof scorer.timestamp.toDate === 'function' 
-                  ? new Date(scorer.timestamp.toDate()).toLocaleDateString()
-                  : '날짜 정보 없음';
+            {perfectScorers.map((scorer) => {
+              // timestamp가 있고 toDate 메서드가 있는지 확인
+              const date = scorer.timestamp && typeof scorer.timestamp.toDate === 'function' 
+                ? new Date(scorer.timestamp.toDate()).toLocaleString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                  })
+                : '날짜 정보 없음';
                 
                 return (
                   <div 
