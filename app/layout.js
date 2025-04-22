@@ -1,4 +1,5 @@
 import './globals.css';
+import BottomNav from './components/BottomNav';
 
 export const metadata = {
   title: '미술 작품 퀴즈 - 당신의 미술 지식을 테스트해보세요!',
@@ -25,8 +26,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
-        <main className="min-h-screen py-8 sm:py-12">
+        <main className="min-h-screen py-8 sm:py-12 pb-24">
           {children}
+          <BottomNav />
         </main>
       </body>
     </html>

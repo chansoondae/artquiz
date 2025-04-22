@@ -1,4 +1,4 @@
-// /components/Quiz.js
+// /app/components/QuizHigh.js
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -9,7 +9,7 @@ import NicknameModal from './NicknameModal';
 import TopScorersBoard from './TopScorersBoard';
 import QuizStatistics from './QuizStatistics';
 
-export default function Quiz({ questions }) {
+export default function QuizHigh({ questions }) {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
@@ -20,12 +20,12 @@ export default function Quiz({ questions }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resultSubmitted, setResultSubmitted] = useState(false);
 
-  // 최고 득점자 불러오기
+  // 전문가급 최고 득점자 불러오기 - 컬렉션 이름 변경
   useEffect(() => {
     const fetchTopScorers = async () => {
       try {
         const q = query(
-          collection(db, 'quizResults'), 
+          collection(db, 'quizResultsHigh'), // 'quizResults' 대신 'quizResultsHigh' 사용
           orderBy('score', 'desc'),
           orderBy('timestamp', 'desc'),
           limit(10)
@@ -43,10 +43,10 @@ export default function Quiz({ questions }) {
       }
     };
     
-    // 통계 데이터 불러오기
+    // 통계 데이터 불러오기 - 문서 이름 변경
     const fetchQuestionStats = async () => {
       try {
-        const statsDoc = await getDoc(doc(db, 'statistics', 'questionStats'));
+        const statsDoc = await getDoc(doc(db, 'statistics', 'questionStatsHigh')); // 'questionStats' 대신 'questionStatsHigh' 사용
         if (statsDoc.exists()) {
           setQuestionStats(statsDoc.data().stats || []);
         }
@@ -85,8 +85,8 @@ export default function Quiz({ questions }) {
     setCorrectCount(correct);
     setShowResults(true);
     
-    // 점수가 만점이거나 최소 3문제 이상 맞췄을 때 닉네임 모달 표시
-    if (correct === questions.length || correct >= 3) {
+    // 점수가 만점이거나 최소 2문제 이상 맞췄을 때 닉네임 모달 표시 (문제 수가 5개이므로 기준 조정)
+    if (correct === questions.length || correct >= 2) {
       setShowNicknameModal(true);
     }
     
@@ -128,9 +128,9 @@ export default function Quiz({ questions }) {
     try {
       setNickname(nickname);
       
-      // 결과 저장
+      // 결과 저장 - 컬렉션 이름 변경
       const timestamp = new Date();
-      await addDoc(collection(db, 'quizResults'), {
+      await addDoc(collection(db, 'quizResultsHigh'), { // 'quizResults' 대신 'quizResultsHigh' 사용
         nickname,
         score: correctCount,
         answers: selectedAnswers,
@@ -138,8 +138,8 @@ export default function Quiz({ questions }) {
         timestamp
       });
       
-      // 통계 업데이트
-      const statsRef = doc(db, 'statistics', 'questionStats');
+      // 통계 업데이트 - 문서 이름 변경
+      const statsRef = doc(db, 'statistics', 'questionStatsHigh'); // 'questionStats' 대신 'questionStatsHigh' 사용
       await runTransaction(db, async (transaction) => {
         const statsDoc = await transaction.get(statsRef);
         
@@ -233,26 +233,17 @@ export default function Quiz({ questions }) {
                 </label>
               ))}
             </div>
+            
+            {/* 정답 설명 추가 */}
+            {showResults && question.explanation && (
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                <p className="text-sm text-blue-800">
+                  <span className="font-bold">정답 설명:</span> {question.explanation}
+                </p>
+              </div>
+            )}
           </div>
         ))}
-      </div>
-      
-      <div className="sticky bottom-20 flex justify-center gap-4 py-4 z-10">
-        {!showResults ? (
-          <button 
-            onClick={checkAnswers} 
-            className="gradient-button px-6 sm:px-8 py-2 sm:py-3 text-white font-bold rounded-full text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200"
-          >
-            정답 확인
-          </button>
-        ) : (
-          <button 
-            onClick={resetQuiz} 
-            className="reset-button px-6 sm:px-8 py-2 sm:py-3 text-white font-bold rounded-full text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200"
-          >
-            다시 하기
-          </button>
-        )}
       </div>
 
       {showResults && (
@@ -260,7 +251,7 @@ export default function Quiz({ questions }) {
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-fuchsia-900">퀴즈 결과</h2>
           <p className="text-xl sm:text-2xl mb-2">
             {nickname && <span className="font-bold text-fuchsia-800">{nickname} 님</span> }
-            10문제 중 <span className="font-bold text-fuchsia-700">{correctCount}문제</span> 정답!
+            {questions.length}문제 중 <span className="font-bold text-fuchsia-700">{correctCount}문제</span> 정답!
           </p>
           <div className="w-full bg-gray-200 rounded-full h-4 mb-4 sm:mb-6">
             <div 
@@ -270,12 +261,12 @@ export default function Quiz({ questions }) {
           </div>
           <p className="text-base sm:text-lg mb-6">
             {correctCount === questions.length && "완벽해요! 당신은 진정한 미술 전문가입니다! 👏"}
-            {correctCount >= 7 && correctCount < questions.length && "훌륭해요! 미술에 대한 지식이 상당하군요! 👍"}
-            {correctCount >= 4 && correctCount < 7 && "괜찮아요! 미술에 대한 관심이 느껴집니다. 👌"}
-            {correctCount < 4 && "미술의 세계는 무궁무진해요! 좀 더 배워보세요! 😊"}
+            {correctCount >= Math.floor(questions.length * 0.7) && correctCount < questions.length && "훌륭해요! 미술에 대한 전문 지식이 돋보입니다! 👍"}
+            {correctCount >= Math.floor(questions.length * 0.4) && correctCount < Math.floor(questions.length * 0.7) && "괜찮아요! 미술에 대한 깊은 관심이 느껴집니다. 👌"}
+            {correctCount < Math.floor(questions.length * 0.4) && "전문가급 미술의 세계는 무궁무진해요! 좀 더 공부해보세요! 😊"}
           </p>
           
-          {!nickname && correctCount >= 3 && !resultSubmitted && (
+          {!nickname && correctCount >= 2 && !resultSubmitted && (
             <div className="mb-6 p-4 bg-fuchsia-50 rounded-lg border border-fuchsia-200">
               <p className="mb-3 text-fuchsia-900">당신의 결과를 저장하고 랭킹에 참여하세요!</p>
               <button
@@ -313,6 +304,24 @@ export default function Quiz({ questions }) {
         onSubmit={handleNicknameSubmit}
         isSubmitting={isSubmitting}
       />
+
+<div className="sticky bottom-20 flex justify-center gap-4 py-4 z-10">
+        {!showResults ? (
+          <button 
+            onClick={checkAnswers} 
+            className="gradient-button px-6 sm:px-8 py-2 sm:py-3 text-white font-bold rounded-full text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200"
+          >
+            정답 확인
+          </button>
+        ) : (
+          <button 
+            onClick={resetQuiz} 
+            className="reset-button px-6 sm:px-8 py-2 sm:py-3 text-white font-bold rounded-full text-sm sm:text-base shadow-lg hover:shadow-xl transition-all duration-200"
+          >
+            다시 하기
+          </button>
+        )}
+      </div>
     </div>
   );
 }
