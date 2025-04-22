@@ -1,26 +1,128 @@
+/* /app/globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+KR:wght@400;700&display=swap');
+
 @import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 30, 30, 30;
+  --background-start-rgb: 250, 245, 255;
+  --background-end-rgb: 255, 250, 255;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    )
+    fixed;
+}
+
+/* 아트카드 스타일 */
+.art-card {
+  box-shadow: 0 5px 20px rgba(200, 105, 245, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.art-card:hover {
+  box-shadow: 0 8px 25px rgba(200, 105, 245, 0.15);
+  transform: translateY(-2px);
+}
+
+/* 그라디언트 버튼 스타일 */
+.gradient-button {
+  background: linear-gradient(135deg, #c084fc, #9333ea);
+  box-shadow: 0 3px 10px rgba(147, 51, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.gradient-button:hover {
+  box-shadow: 0 6px 15px rgba(147, 51, 234, 0.4);
+  transform: translateY(-1px);
+}
+
+.gradient-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(147, 51, 234, 0.4);
+}
+
+/* 리셋 버튼 */
+.reset-button {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.reset-button:hover {
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+/* 옵션 스타일 */
+.option-label {
+  background-color: white;
+  border-color: #e5e7eb;
+  transition: all 0.15s ease;
+}
+
+.option-label:hover:not(.correct):not(.incorrect) {
+  border-color: rgb(192, 132, 252, 0.5);
+  background-color: rgb(250, 245, 255);
+}
+
+.option-label.selected {
+  border-color: #c084fc;
+  background-color: rgb(250, 245, 255);
+  box-shadow: 0 0 0 1px #c084fc;
+}
+
+.option-label.correct {
+  border-color: #10b981;
+  background-color: rgb(236, 253, 245);
+  box-shadow: 0 0 0 1px #10b981;
+}
+
+.option-label.incorrect {
+  border-color: #ef4444;
+  background-color: rgb(254, 242, 242);
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-custom {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 스코러 아이템 애니메이션 */
+.scorer-item {
+  transition: all 0.3s ease;
+}
+
+.scorer-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(200, 105, 245, 0.2);
 }
