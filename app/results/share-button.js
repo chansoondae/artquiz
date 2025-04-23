@@ -3,18 +3,20 @@
 import { useState } from 'react';
 import styles from './share-button.module.css';
 
-export default function ShareButton({ type, personalityName, nickname }) {
+export default function ShareButton({ type, nickname }) {
   const [showToast, setShowToast] = useState(false);
   
   const handleShare = async () => {
     // 공유할 텍스트 생성
     let shareText = '';
     if (nickname) {
-      shareText = `${nickname}님의 미술 감상 유형은 ${personalityName}입니다! 당신의 미술 감상 유형도 알아보세요.`;
+      shareText = `${nickname}님의 미술 감상 유형은 ${type}입니다! 당신의 미술 감상 유형도 알아보세요.`;
     } else {
-      shareText = `나의 미술 감상 유형은 ${personalityName}입니다! 당신의 미술 감상 유형도 알아보세요.`;
+      shareText = `나의 미술 감상 유형은 ${type}입니다! 당신의 미술 감상 유형도 알아보세요.`;
     }
-    const shareUrl = `${window.location.origin}/test`;
+    
+    // URL에 type과 nickname 포함
+    const shareUrl = `${window.location.origin}/results?type=${type}${nickname ? `&nickname=${nickname}` : ''}`;
     
     // 공유 기능 지원 여부 확인
     if (navigator.share) {
