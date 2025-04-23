@@ -1,5 +1,6 @@
 import './globals.css';
 import BottomNav from './components/BottomNav';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 export const metadata = {
   title: '미술 작품 퀴즈 - 당신의 미술 지식을 테스트해보세요!',
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
     <html lang="ko">
       <body>
         <main className="min-h-screen py-8 sm:py-12 pb-24">
+          <GoogleAnalytics />
           {children}
           <BottomNav />
         </main>
