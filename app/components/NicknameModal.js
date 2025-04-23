@@ -114,17 +114,42 @@ export default function NicknameModal({ isOpen, onClose, onSubmit, isSubmitting 
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-100"
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-100 transition-colors duration-200"
               disabled={isSubmitting}
             >
               취소
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-medium rounded-md hover:from-fuchsia-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-fuchsia-500"
+              className="relative px-4 py-2 bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white font-medium rounded-md hover:from-fuchsia-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-fuchsia-500 transition-all duration-200 overflow-hidden"
               disabled={isSubmitting}
             >
-              {isSubmitting ? '저장 중...' : '저장하기'}
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <span className="inline-block w-4 h-4 mr-2 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+                  진행 중...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center">
+                  <span className="mr-1">저장하기</span>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-5 w-5 ml-1 transform transition-transform duration-300 ease-in-out group-hover:translate-x-1" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+              )}
+              
+              {/* 물결 효과 애니메이션 */}
+              {isSubmitting && (
+                <span className="absolute inset-0 flex justify-center items-center">
+                  <span className="absolute h-8 w-8 rounded-full bg-white opacity-20 animate-ping"></span>
+                </span>
+              )}
             </button>
           </div>
         </form>
