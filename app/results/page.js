@@ -1,5 +1,6 @@
 // app/results/page.js
 
+import { Suspense } from 'react';
 import ResultsPageClient from './ResultsPageClient';
 import { personalityTypes } from './../../data/personalityTypes';
 
@@ -48,12 +49,19 @@ export async function generateMetadata({ searchParams }) {
   };
 }
 
+// 로딩 UI 컴포넌트
+function ResultsLoading() {
+  return <div className="text-center p-8">결과 불러오는 중...</div>;
+}
+
 // 서버 컴포넌트 페이지
 export default async function ResultsPage({ searchParams }) {
   // 여기도 searchParams를 await로 처리
   const unwrappedParams = await searchParams;
   
   return (
-    <ResultsPageClient searchParams={unwrappedParams} />
+    <Suspense fallback={<ResultsLoading />}>
+      <ResultsPageClient searchParams={unwrappedParams} />
+    </Suspense>
   );
 }
