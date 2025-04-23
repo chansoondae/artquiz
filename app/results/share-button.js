@@ -27,7 +27,19 @@ export default function ShareButton({ type, nickname }) {
           url: shareUrl
         });
       } catch (error) {
-        console.error('공유 실패:', error);
+        // 사용자가 공유를 취소한 경우 (AbortError)는 에러 로그를 출력하지 않음
+        if (error.name !== 'AbortError') {
+          console.error('공유 실패:', error);
+          
+          // 공유 API 실패 시 클립보드로 대체
+          try {
+            await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 2000);
+          } catch (clipboardError) {
+            console.error('클립보드 복사 실패:', clipboardError);
+          }
+        }
       }
     } else {
       // 공유 API가 지원되지 않는 경우 클립보드에 복사

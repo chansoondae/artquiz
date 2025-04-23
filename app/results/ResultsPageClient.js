@@ -1,77 +1,127 @@
 'use client';
 
-import { useState } from 'react';
-import styles from './share-button.module.css';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { personalityTypes } from './../../data/personalityTypes';
+import styles from './results.module.css';
+import ShareButton from './share-button';
 
-export default function ShareButton({ type, type, nickname }) {
-  const [showToast, setShowToast] = useState(false);
+export default function ResultsPageClient({ searchParams: initialSearchParams }) {
+  const searchParams = useSearchParams();
+  const [type, setType] = useState(null);
+  const [result, setResult] = useState(null);
+  const [nickname, setNickname] = useState('');
   
-  const handleShare = async () => {
-    // 공유할 텍스트 생성
-    let shareText = '';
-    if (nickname) {
-      shareText = `${nickname}님의 미술 감상 유형은 ${type}입니다! 당신의 미술 감상 유형도 알아보세요.`;
-    } else {
-      shareText = `나의 미술 감상 유형은 ${type}입니다! 당신의 미술 감상 유형도 알아보세요.`;
+  useEffect(() => {
+    // 서버에서 전달받은 초기 searchParams가 있으면 사용하고, 없으면 useSearchParams 훅 사용
+    const typeParam = initialSearchParams?.type || searchParams.get('type');
+    const nicknameParam = initialSearchParams?.nickname || searchParams.get('nickname');
+    
+    if (typeParam && personalityTypes[typeParam]) {
+      setType(typeParam);
+      setResult(personalityTypes[typeParam]);
     }
     
-    // URL에 type과 nickname 포함
-    const shareUrl = `${window.location.origin}/results?type=${type}${nickname ? `&nickname=${nickname}` : ''}`;
-    
-    // 공유 기능 지원 여부 확인
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: '미술 감상 유형 테스트 결과',
-          text: shareText,
-          url: shareUrl
-        });
-      } catch (error) {
-        // 사용자가 공유를 취소한 경우 (AbortError)는 에러 로그를 출력하지 않음
-        if (error.name !== 'AbortError') {
-          console.error('공유 실패:', error);
-          
-          // 공유 API 실패 시 클립보드로 대체
-          try {
-            await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 2000);
-          } catch (clipboardError) {
-            console.error('클립보드 복사 실패:', clipboardError);
-          }
-        }
-      }
-    } else {
-      // 공유 API가 지원되지 않는 경우 클립보드에 복사
-      try {
-        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
-        // 토스트 메시지 표시
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 2000);
-      } catch (error) {
-        console.error('클립보드 복사 실패:', error);
-      }
+    if (nicknameParam) {
+      setNickname(nicknameParam);
     }
-  };
+  }, [searchParams, initialSearchParams]);
+  
+  // 유형이 없으면 로딩 상태 또는 오류 메시지 표시
+  if (!type || !result) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.errorMessage}>
+          <h1 className={styles.title}>결과를 찾을 수 없습니다</h1>
+          <p className={styles.description}>테스트를 다시 시작해주세요.</p>
+          <Link href="/test">
+            <button className={styles.button}>테스트 다시 하기</button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  
+  // 유형별 대표 이미지 경로
+  const typeImagePath = `/images/art-types/${type.toLowerCase()}.jpg`;
   
   return (
-    <>
-      <button className={styles.shareButton} onClick={handleShare}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={styles.shareIcon}>
-          <circle cx="18" cy="5" r="3"></circle>
-          <circle cx="6" cy="12" r="3"></circle>
-          <circle cx="18" cy="19" r="3"></circle>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-        </svg>
-        결과 공유하기
-      </button>
+    <div className={styles.container}>
+      <h1 className={styles.title}>미술 감상 유형은:</h1>
       
-      {showToast && (
-        <div className={styles.toast}>
-          클립보드에 복사되었습니다!
+      <div className={styles.resultCard}>
+        <div className={styles.resultHeader}>
+        <h2 className={styles.resultTitle}>
+         {nickname ? `${nickname}님은 ${result.name}` : result.name}
+        </h2>
         </div>
-      )}
-    </>
+        
+        <div className={styles.resultContent}>
+          <div className={styles.imageContainer}>
+            <Image 
+              src={typeImagePath}
+              alt={`${result.name} 대표 이미지`}
+              width={400}
+              height={600}
+              className={styles.typeImage}
+              priority
+            />
+          </div>
+          
+          <div className={styles.infoContainer}>
+            <section className={styles.section}>
+              <h3 className={styles.sectionTitle}>성격적 특징</h3>
+              <ul className={styles.traitsList}>
+                <li>{result.personality.trait1}</li>
+                <li>{result.personality.trait2}</li>
+                <li>{result.personality.trait3}</li>
+                <li>{result.personality.trait4}</li>
+              </ul>
+            </section>
+            
+            <section className={styles.section}>
+              <h3 className={styles.sectionTitle}>미술관 관람 스타일</h3>
+              <ul className={styles.traitsList}>
+                <li>{result.viewingStyle.style1}</li>
+                <li>{result.viewingStyle.style2}</li>
+                <li>{result.viewingStyle.style3}</li>
+                <li>{result.viewingStyle.style4}</li>
+              </ul>
+            </section>
+            
+            <section className={styles.section}>
+              <h3 className={styles.sectionTitle}>추천 미술 여행지</h3>
+              <ul className={styles.traitsList}>
+                <li>{result.recommendedTravel.place1}</li>
+                <li>{result.recommendedTravel.place2}</li>
+                <li>{result.recommendedTravel.place3}</li>
+                <li>{result.recommendedTravel.place4}</li>
+              </ul>
+            </section>
+            
+            {/* <section className={styles.section}>
+              <h3 className={styles.sectionTitle}>선호 작가/작품</h3>
+              <p className={styles.artistsList}>{result.preferredArtists}</p>
+            </section> */}
+          </div>
+        </div>
+        
+        <div className={styles.buttonsContainer}>
+          <Link href="/test">
+            <button className={styles.button}>테스트 다시 하기</button>
+          </Link>
+          
+          <ShareButton type={type} nickname={nickname} />
+        </div>
+      </div>
+      
+      <div className={styles.navigation}>
+        <Link href="/personality-types" className={styles.link}>
+          모든 유형 보기
+        </Link>
+      </div>
+    </div>
   );
 }
