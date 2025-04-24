@@ -83,7 +83,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
             <div className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* 원본 이미지 */}
-                <div className="space-y-3">
+                {/* <div className="space-y-3">
                   <h2 className="text-xl font-semibold text-fuchsia-900">원본 이미지</h2>
                   <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
                     {imageData.originalImageUrl ? (
@@ -114,7 +114,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
                       </a>
                     </div>
                   )}
-                </div>
+                </div> */}
 
                 {/* 생성된 이미지 */}
                 <div className="space-y-3">
