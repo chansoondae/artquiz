@@ -244,7 +244,7 @@ export default function ImageGenerator() {
   return (
     <div className="min-h-screen py-8 px-4 max-w-5xl mx-auto">
       <header className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-2 text-fuchsia-900">이미지 생성기</h1>
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 text-fuchsia-900">예술가 따라하기</h1>
         <p className="text-lg text-gray-700">이미지를 업로드하고 AI를 통해 새로운 작품을 만들어보세요!</p>
         <div className="w-24 h-1 bg-gradient-to-r from-fuchsia-400 to-fuchsia-900 mx-auto mt-4"></div>
         
@@ -394,7 +394,7 @@ export default function ImageGenerator() {
                     </svg>
                     생성 중...
                   </span>
-                ) : selectedStyle ? `${selectedStyle.koreanName} 스타일로 생성하기` : '이미지 생성하기'}
+                ) : selectedStyle ? `${selectedStyle.koreanName} 스타일로 생성하기` : '예술가 따라하기'}
               </button>
               <button
                 type="button"
