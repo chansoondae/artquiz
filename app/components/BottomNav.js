@@ -12,6 +12,7 @@ export default function BottomNav() {
   const isBasicActive = pathname === '/';
   const isAdvancedActive = pathname === '/quiz/high';
   const isPersonalityActive = pathname === '/personality' || pathname.startsWith('/personality/');
+  const isImageGeneratorActive = pathname === '/image' || pathname.startsWith('/image/');
   
   return (
     <div className={styles.navContainer}>
@@ -81,6 +82,29 @@ export default function BottomNav() {
             />
           </svg>
           <span className={styles.navText}>성격 유형</span>
+        </Link>
+        
+        <div className={styles.navDivider}></div>
+        
+        <Link 
+          href="/image"
+          className={`${styles.navItem} ${isImageGeneratorActive ? styles.activeImageGenerator : ''}`}
+        >
+          <svg 
+            className={styles.navIcon} 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
+            />
+          </svg>
+          <span className={styles.navText}>이미지 생성기</span>
         </Link>
       </div>
     </div>

@@ -30,11 +30,11 @@
   transition: all 0.3s;
 }
 
-.navItem:not(.activeBasic, .activeAdvanced, .activePersonality) {
+.navItem:not(.activeBasic, .activeAdvanced, .activePersonality, .activeImageGenerator) {
   color: #374151; /* text-gray-700 */
 }
 
-.navItem:not(.activeBasic, .activeAdvanced, .activePersonality):hover {
+.navItem:not(.activeBasic, .activeAdvanced, .activePersonality, .activeImageGenerator):hover {
   background-color: rgba(217, 70, 239, 0.05); /* fuchsia-50 equivalent */
 }
 
@@ -52,6 +52,12 @@
 
 .activePersonality {
   background: linear-gradient(to right, #4f46e5, #2563eb); /* from-indigo-600 to-blue-600 */
+  color: white;
+  font-weight: 700;
+}
+
+.activeImageGenerator {
+  background: linear-gradient(to right, #db2777, #e11d48); /* from-pink-600 to-rose-600 */
   color: white;
   font-weight: 700;
 }
@@ -75,7 +81,8 @@
 /* Animation for the active state */
 .activeBasic,
 .activeAdvanced,
-.activePersonality {
+.activePersonality,
+.activeImageGenerator {
   animation: pulse 2s infinite;
 }
 
@@ -99,5 +106,22 @@
   
   .navText {
     font-size: 0.875rem; /* text-sm */
+  }
+}
+
+@media (max-width: 640px) {
+  .navWrapper {
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 16px;
+    padding: 8px;
+  }
+  
+  .navItem {
+    margin: 4px;
+  }
+  
+  .navDivider {
+    display: none;
   }
 }
