@@ -326,6 +326,7 @@ export default function ImageGenerator() {
                 className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed border-fuchsia-300 rounded-lg"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
+                onClick={() => document.getElementById('file-upload').click()}
               >
                 <div className="space-y-1 text-center">
                   {!previewUrl ? (
