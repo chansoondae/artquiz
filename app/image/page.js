@@ -349,6 +349,7 @@ export default function ImageGenerator() {
                         <label
                           htmlFor="file-upload"
                           className="relative cursor-pointer bg-white rounded-md font-medium text-fuchsia-600 hover:text-fuchsia-500 focus-within:outline-none"
+                          onClick={(e) => e.stopPropagation()} // 이벤트 전파 중단
                         >
                           <span>파일 선택하기</span>
                           <input
@@ -374,7 +375,8 @@ export default function ImageGenerator() {
                       />
                       <button
                         type="button"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation(); // 이벤트 전파 중단
                           setFile(null);
                           setPreviewUrl(null);
                         }}

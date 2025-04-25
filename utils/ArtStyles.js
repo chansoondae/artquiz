@@ -79,6 +79,36 @@ const artStylePrompts = [
         prompt: "Transform this image by Bernard Buffet. Expressionism. Beatuiful."
     },
     {
+      id: "davidhockney",
+      koreanName: "호크니",
+      englishName: "David Hockney",
+      prompt: "Create an image using a bright and vibrant color palette. Boldly use vivid colors such as turquoise blue, bright lime green, coral pink, candy red, and chrome yellow. Colors should be applied in flat, uniform areas separated by distinct black or dark outlines. Compose the image in a 'cubist' split format that simultaneously shows scenes from various viewpoints and angles. Create an effect similar to a collage of multiple photographs gathered on one screen. Create contrast by rendering some areas in detail while simplifying others. Exaggerate the interaction of light and shadow, particularly depicting reflected light on surfaces with distinctive patterns. Emphasize refracted light on water, light passing through glass, and geometric patterns created by shadows. Ignore conventional perspective rules and instead create multiple viewpoint effects, producing a unique visual experience as if viewed from several angles simultaneously. Express both the front and side views of subjects at the same time. Use strong color contrasts, prominent geometric shapes, and simplified surface textures with flat expression. Capture special vitality and energy in everyday moments and minor scenes. Create an overall warm and optimistic atmosphere."
+    },
+    {
+      id: "kusamayayoi",
+      koreanName: "쿠사마",
+      englishName: "Kusama Yayoi",
+      prompt: "Transform this image by a universe of dots that unfolds infinitely. Small circular dots meticulously arranged throughout the piece should be used as the main visual element. These dots can be maintained at a consistent size of 2-8mm or gradually change in size from the center outward. Use intense and deep red (#FF0000), bright yellow (#FFFF00), cobalt blue (#0047AB), pure white (#FFFFFF), emerald green (#50C878), and violet purple (#8A2BE2) colors, arranging them to create strong contrasts. You may use all colors in one piece or selectively combine 2-3 colors. Dots can be arranged in patterns such as: Concentric circles radiating from the center Regular arrangements aligned in a grid format Spiral compositions that rotate and gradually become smaller or larger Wave-like curved formations Particularly in some areas, make the dots connect to create structures resembling nets or cellular tissue. These connected sections can be expressed with fine lines or naturally formed as the dots get closer to each other. To maximize the contrast between background and dots, use bright colored dots on dark backgrounds and dark colored dots on bright backgrounds. The density of dots throughout the work can vary, with some areas very densely packed and others more spaciously arranged to create visual rhythm. Overall, the work should evoke an infinitely expanding universe or microscopic world, providing an immersive feeling that makes viewers want to keep looking."
+   },
+   {
+    id: "fridakahlo",
+    koreanName: "프리다칼로",
+    englishName: "Frida Kahlo",
+    prompt: "Transform the uploaded photo into a scene composed of rich Mexican folk elements with vibrating colors. Use bold contrasts of vivid cobalt blue, terracotta red, emerald green, and marigold yellow. Render objects with meticulous detail and slightly exaggerated proportions. Seamlessly blend reality with surrealistic elements. Give anthropomorphic qualities to everyday objects and natural landscapes. Apply brushstrokes in a controlled, precise manner using very thin brushes for elaborate details. The distinction between background and foreground should be clear yet fused in surrealistic ways. The surface should be smooth and glossy, utilizing the deep saturation of oil paints. Shadows and highlights should be dramatic yet natural, maintaining an intimate scale as if painted on a small panel or canvas."
+    },
+    {
+      id: "ghibli",
+      koreanName: "지브리",
+      englishName: "Ghibli",
+      prompt: "Transform this image by Ghibli style."
+    },
+    {
+      id: "japaneseanimation",
+      koreanName: "애니메이션",
+      englishName: "Japanese Animation",
+      prompt: "Transform this image by Japansese Animation. Beatuiful.Vibrant characters with gorgeous artwork, fantastic themes, and large, expressive eyes."
+  },
+    {
         id: "flatillustration",
         koreanName: "일러스트",
         englishName: "Flat Illustration",
@@ -90,12 +120,7 @@ const artStylePrompts = [
         englishName: "Vintage Retro",
         prompt: "Transform this image by Vintage Retro. Beatuiful.Vintage and retro illustration art styles are inspired by a specific era and recreate the look and feel of that era. They often create a unique atmosphere with rich textures and colors that can be warm and cozy or edgy and modern."
     },
-    {
-        id: "japaneseanimation",
-        koreanName: "애니메이션",
-        englishName: "Japanese Animation",
-        prompt: "Transform this image by Japansese Animation. Beatuiful.Vibrant characters with gorgeous artwork, fantastic themes, and large, expressive eyes."
-    },
+
   ];
   
   export default artStylePrompts;
