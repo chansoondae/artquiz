@@ -4,11 +4,13 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import ImageGenerationHistory from '../components/ImageGenerationHistory';
 import artStyles from './../../utils/ArtStyles'; // Import art styles (adjust path as needed)
 import NicknameModal from '../components/NicknameModal'; // 닉네임 모달 컴포넌트 추가
 
 export default function ImageGenerator() {
+  const router = useRouter();
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [prompt, setPrompt] = useState('');
@@ -24,6 +26,7 @@ export default function ImageGenerator() {
   const [nickname, setNickname] = useState('');
   const [submittingNickname, setSubmittingNickname] = useState(false);
   const [pendingImageGeneration, setPendingImageGeneration] = useState(null);
+  const [processingGenId, setProcessingGenId] = useState(null); // 처리 중인 이미지 생성 ID 저장
   
   // 컴포넌트 마운트 시 로컬 스토리지에서 닉네임 불러오기
   useEffect(() => {
@@ -206,23 +209,41 @@ export default function ImageGenerator() {
       
       const responseData = await response.json();
       
-      // API가 성공적으로 로그를 기록하고 이미지를 생성한 경우
-      if (responseData.imageUrl) {
-        setGeneratedImage(responseData.imageUrl);
-        setOriginalImage(responseData.originalImageUrl);
-        setSuccess(responseData.message || '이미지가 성공적으로 생성되었습니다.');
+      // SQS에 메시지가 성공적으로 전송된 경우
+      if (responseData.genId) {
+        // 생성 ID 저장
+        setProcessingGenId(responseData.genId);
+        
+        // 원본 이미지 URL 설정
+        if (responseData.originalImageUrl) {
+          setOriginalImage(responseData.originalImageUrl);
+        }
+        
+        // 현재 처리 중임을 표시
+        setSuccess('이미지 생성 요청이 처리 중입니다. 잠시만 기다려주세요...');
+        
+        // 60초 후에 이미지 상세 페이지로 이동
+        setTimeout(() => {
+          console.log('60초 타이머 완료, 이미지 상세 페이지로 이동');
+          
+          if (responseData.genId) {
+            // 이미지 상세 페이지로 이동
+            router.push(`/image/${responseData.genId}`);
+          } else {
+            // genId가 없는 경우 히스토리 새로고침만 수행
+            triggerHistoryRefresh();
+            setLoading(false);
+            setSuccess('이미지가 생성되었습니다. 히스토리에서 확인하세요.');
+          }
+        }, 60000);
       } else {
-        // 로그는 기록했지만 이미지 생성에 실패한 경우
-        setError(responseData.errorMessage || '이미지 생성에 실패했습니다.');
+        // API 응답에 genId가 없는 경우 오류 처리
+        setError('이미지 생성 요청 처리 중 오류가 발생했습니다.');
+        setLoading(false);
       }
-      
-      // 히스토리 새로고침 트리거
-      triggerHistoryRefresh();
-      
     } catch (err) {
       console.error('Error generating image:', err);
       setError(err.message || '이미지 생성 중 알 수 없는 오류가 발생했습니다.');
-    } finally {
       setLoading(false);
     }
   };
@@ -236,6 +257,7 @@ export default function ImageGenerator() {
     setError('');
     setSuccess('');
     setSelectedStyle(null);
+    setProcessingGenId(null);
   };
 
   // 자주 사용되는 스타일 (처음 8개만 표시)
@@ -392,7 +414,7 @@ export default function ImageGenerator() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    생성 중...
+                    처리 중...
                   </span>
                 ) : selectedStyle ? `${selectedStyle.koreanName} 스타일로 생성하기` : '예술가 따라하기'}
               </button>
@@ -423,7 +445,7 @@ export default function ImageGenerator() {
 
         {/* Result Section */}
         <div className="art-card bg-white bg-opacity-70 backdrop-blur-sm p-6 rounded-xl shadow-md border border-fuchsia-100">
-          {generatedImage ? (
+          {generatedImage || (originalImage && loading) ? (
             <div className="space-y-6">
               <h2 className="text-xl font-bold text-fuchsia-900 mb-4">
                 {selectedStyle ? `${selectedStyle.koreanName} 스타일로 생성된 이미지` : '생성된 이미지'}
@@ -445,29 +467,47 @@ export default function ImageGenerator() {
                 )}
                 
                 <div className="relative aspect-square">
-                  <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-lg" />
-                  <img
-                    src={generatedImage}
-                    alt="Generated Image"
-                    className="object-contain rounded-lg border border-gray-200 w-full h-full"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-center text-sm py-1 rounded-b-lg">
-                    {selectedStyle ? `${selectedStyle.koreanName} 스타일` : '생성됨'}
-                  </div>
+                  {generatedImage ? (
+                    <>
+                      <img
+                        src={generatedImage}
+                        alt="Generated Image"
+                        className="object-contain rounded-lg border border-gray-200 w-full h-full"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-center text-sm py-1 rounded-b-lg">
+                        {selectedStyle ? `${selectedStyle.koreanName} 스타일` : '생성됨'}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex items-center justify-center h-full w-full border border-gray-200 rounded-lg">
+                      <div className="text-center p-4">
+                        <div className="mx-auto mb-2">
+                          <svg className="animate-spin h-8 w-8 text-fuchsia-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                        </div>
+                        <p className="text-fuchsia-700 font-medium">처리 중...</p>
+                        <p className="text-gray-500 text-sm mt-1">60초 이내에 완료됩니다</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               
-              <div className="flex justify-center gap-3 mt-4">
-                <a
-                  href={generatedImage}
-                  download="generated-image.png"
-                  className="gradient-button px-4 py-2 text-white font-bold rounded-full text-sm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  다운로드
-                </a>
-              </div>
+              {generatedImage && (
+                <div className="flex justify-center gap-3 mt-4">
+                  <a
+                    href={generatedImage}
+                    download="generated-image.png"
+                    className="gradient-button px-4 py-2 text-white font-bold rounded-full text-sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    다운로드
+                  </a>
+                </div>
+              )}
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-center p-6">

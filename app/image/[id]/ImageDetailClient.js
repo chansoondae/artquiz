@@ -62,9 +62,9 @@ export default function ImageDetailClient({ id, initialImageData }) {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-1 px-4">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
+        <div className="text-center mb-2">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-fuchsia-900">
             {imageData.styleName || '커스텀 스타일'} 이미지
           </h1>
@@ -90,7 +90,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-fuchsia-100">
-            <div className="p-6">
+            <div className="p-2">
               {/* 생성된 이미지만 표시 */}
               <div className="space-y-4">
                 <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-200 max-w-lg mx-auto">
@@ -107,7 +107,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
                   )}
                 </div>
                 {imageData.generatedImageUrl && (
-                  <div className="flex justify-center mt-4">
+                  <div className="flex justify-center mt-2">
                     <a
                       href={imageData.generatedImageUrl}
                       download
@@ -127,7 +127,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
           </div>
         )}
 
-        <div className="mt-8 text-center">
+        <div className="mt-4 text-center">
           <Link href="/image" className="text-fuchsia-600 hover:text-fuchsia-800 font-medium">
             ← 이미지 생성 페이지로 돌아가기
           </Link>
