@@ -86,7 +86,7 @@ export default function BottomNav() {
         
         <div className={styles.navDivider}></div>
         
-        {/* <Link 
+        <Link 
           href="/image"
           className={`${styles.navItem} ${isImageGeneratorActive ? styles.activeImageGenerator : ''}`}
         >
@@ -105,7 +105,7 @@ export default function BottomNav() {
             />
           </svg>
           <span className={styles.navText}>이미지</span>
-        </Link> */}
+        </Link>
       </div>
     </div>
   );

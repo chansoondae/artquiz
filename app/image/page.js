@@ -242,10 +242,10 @@ export default function ImageGenerator() {
   const popularStyles = artStyles.slice(0, 8);
 
   return (
-    <div className="min-h-screen py-8 px-4 max-w-5xl mx-auto">
+    <div className="min-h-screen py-2 px-4 max-w-5xl mx-auto">
       <header className="mb-12 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-2 text-fuchsia-900">예술가 따라하기</h1>
-        <p className="text-lg text-gray-700">이미지를 업로드하고 AI를 통해 새로운 작품을 만들어보세요!</p>
+        <p className="text-lg text-gray-700"> AI로 새로운 작품을 만들어보세요!</p>
         <div className="w-24 h-1 bg-gradient-to-r from-fuchsia-400 to-fuchsia-900 mx-auto mt-4"></div>
         
         {/* 사용자 닉네임 표시 */}

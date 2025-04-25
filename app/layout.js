@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
-        <main className="min-h-screen py-8 sm:py-12 pb-24">
+        <main className="min-h-screen py-2 sm:py-12 pb-24">
           <GoogleAnalytics />
           {children}
           <BottomNav />

@@ -27,7 +27,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
 
   if (error) {
     return (
-      <div className="min-h-screen p-8">
+      <div className="min-h-screen py-8 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-lg">
             <h2 className="text-xl font-bold mb-4">오류 발생</h2>
@@ -63,7 +63,7 @@ export default function ImageDetailClient({ id, initialImageData }) {
 
   return (
     <div className="min-h-screen py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-fuchsia-900">
             {imageData.styleName || '커스텀 스타일'} 이미지
@@ -71,6 +71,16 @@ export default function ImageDetailClient({ id, initialImageData }) {
           <p className="text-gray-600">
             생성일: {formatDate(imageData.timestamp)}
           </p>
+          
+          {/* 사용자 정보 표시 */}
+          {imageData.userId && (
+            <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-fuchsia-100 text-fuchsia-800">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              {imageData.userId}
+            </div>
+          )}
         </div>
 
         {imageData.status === 'error' ? (
@@ -81,105 +91,38 @@ export default function ImageDetailClient({ id, initialImageData }) {
         ) : (
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-fuchsia-100">
             <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* 원본 이미지 */}
-                {/* <div className="space-y-3">
-                  <h2 className="text-xl font-semibold text-fuchsia-900">원본 이미지</h2>
-                  <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                    {imageData.originalImageUrl ? (
-                      <img
-                        src={imageData.originalImageUrl}
-                        alt="원본 이미지"
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        이미지 없음
-                      </div>
-                    )}
-                  </div>
-                  {imageData.originalImageUrl && (
-                    <div className="flex justify-center">
-                      <a
-                        href={imageData.originalImageUrl}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-fuchsia-600 hover:text-fuchsia-800 flex items-center"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        원본 다운로드
-                      </a>
-                    </div>
-                  )}
-                </div> */}
-
-                {/* 생성된 이미지 */}
-                <div className="space-y-3">
-                  <h2 className="text-xl font-semibold text-fuchsia-900">
-                    {imageData.styleName ? `${imageData.styleName} 스타일 이미지` : '생성된 이미지'}
-                  </h2>
-                  <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                    {imageData.generatedImageUrl ? (
-                      <img
-                        src={imageData.generatedImageUrl}
-                        alt="생성된 이미지"
-                        className="w-full h-full object-contain"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        {imageData.status === 'processing' ? '처리 중...' : '이미지 없음'}
-                      </div>
-                    )}
-                  </div>
-                  {imageData.generatedImageUrl && (
-                    <div className="flex justify-center">
-                      <a
-                        href={imageData.generatedImageUrl}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-fuchsia-600 hover:text-fuchsia-800 flex items-center"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        생성된 이미지 다운로드
-                      </a>
+              {/* 생성된 이미지만 표시 */}
+              <div className="space-y-4">
+                <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden border border-gray-200 max-w-lg mx-auto">
+                  {imageData.generatedImageUrl ? (
+                    <img
+                      src={imageData.generatedImageUrl}
+                      alt={`${imageData.styleName || '커스텀'} 스타일 이미지`}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      {imageData.status === 'processing' ? '처리 중...' : '이미지 없음'}
                     </div>
                   )}
                 </div>
+                {imageData.generatedImageUrl && (
+                  <div className="flex justify-center mt-4">
+                    <a
+                      href={imageData.generatedImageUrl}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-fuchsia-600 hover:text-fuchsia-800 flex items-center px-4 py-2 rounded-full bg-fuchsia-50 hover:bg-fuchsia-100 transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      이미지 다운로드
+                    </a>
+                  </div>
+                )}
               </div>
-
-              {/* 프롬프트 정보 */}
-              {/* <div className="mt-8 border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-semibold text-fuchsia-900 mb-2">사용된 프롬프트</h3>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <p className="whitespace-pre-wrap text-gray-700">{imageData.prompt || '프롬프트 정보 없음'}</p>
-                </div>
-              </div> */}
-
-              {/* 추가 정보 */}
-              {/* <div className="mt-8 border-t border-gray-200 pt-6">
-                <h3 className="text-lg font-semibold text-fuchsia-900 mb-4">추가 정보</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <p className="text-sm text-gray-500">생성 상태</p>
-                    <p className="font-medium text-gray-900">
-                      {imageData.status === 'completed' && '완료'}
-                      {imageData.status === 'processing' && '처리 중'}
-                      {imageData.status === 'error' && '오류'}
-                      {!imageData.status && '알 수 없음'}
-                    </p>
-                  </div>
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                    <p className="text-sm text-gray-500">문서 ID</p>
-                    <p className="font-medium text-gray-900 break-all">{id}</p>
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         )}

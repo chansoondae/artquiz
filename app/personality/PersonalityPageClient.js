@@ -189,8 +189,9 @@ export default function PersonalityPageClient() {
   const currentArtwork = artworks[currentQuestion];
 
   return (
+    <div className="min-h-screen py-2 px-4 max-w-5xl mx-auto">
     <div className="mb-12 text-center">
-      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-fuchsia-900">미술 작품으로 알아보는 성격 테스트</h1>
+      <h1 className="text-4xl md:text-5xl font-bold mb-8 text-fuchsia-900">미술 작품으로 성격 테스트</h1>
       
       {/* 진행 상태 표시 */}
       <div className={styles.progressContainer}>
@@ -240,6 +241,7 @@ export default function PersonalityPageClient() {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 }
