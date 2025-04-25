@@ -86,27 +86,63 @@ export default function ImageHistoryPage() {
     
     try {
       setLoading(true);
+      setLastVisible(null);
       
-      // 프롬프트 검색 (Firestore에서 문자열 포함 검색은 제한적이므로 단순 비교만 수행)
-      const q = query(
+      // Firestore에서는 직접적인 부분 문자열 검색이 불가능하므로
+      // 각 필드에 대해 별도 쿼리를 실행하고 결과를 클라이언트에서 합칩니다
+      
+      // styleName으로 검색하는 쿼리
+      const styleNameQuery = query(
         collection(db, 'imageGenerations'),
-        where('prompt', '>=', searchPrompt),
-        where('prompt', '<=', searchPrompt + '\uf8ff'),
-        orderBy('prompt'),
+        where('styleName', '==', searchPrompt),
         orderBy('timestamp', 'desc'),
-        limit(pageSize)
+        limit(pageSize * 2) // 충분한 결과를 얻기 위해 페이지 크기의 2배를 가져옵니다
       );
       
-      const querySnapshot = await getDocs(q);
+      // userId로 검색하는 쿼리
+      const userIdQuery = query(
+        collection(db, 'imageGenerations'),
+        where('userId', '==', searchPrompt),
+        orderBy('timestamp', 'desc'),
+        limit(pageSize * 2)
+      );
       
-      const historyData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        timestamp: doc.data().timestamp?.toDate() || new Date()
-      }));
+      // 두 쿼리 실행
+      const [styleNameSnapshot, userIdSnapshot] = await Promise.all([
+        getDocs(styleNameQuery),
+        getDocs(userIdQuery)
+      ]);
       
-      setHistory(historyData);
-      setHasMore(false); // 검색 결과에는 더 로드하기 비활성화
+      // 두 결과의 문서를 합치고 중복 제거
+      const uniqueDocsMap = new Map();
+      
+      // styleName 검색 결과 추가
+      styleNameSnapshot.docs.forEach(doc => {
+        uniqueDocsMap.set(doc.id, {
+          id: doc.id,
+          ...doc.data(),
+          timestamp: doc.data().timestamp?.toDate() || new Date()
+        });
+      });
+      
+      // userId 검색 결과 추가
+      userIdSnapshot.docs.forEach(doc => {
+        uniqueDocsMap.set(doc.id, {
+          id: doc.id,
+          ...doc.data(),
+          timestamp: doc.data().timestamp?.toDate() || new Date()
+        });
+      });
+      
+      // Map에서 배열로 변환하고 타임스탬프로 정렬
+      const searchResults = Array.from(uniqueDocsMap.values()).sort((a, b) => 
+        b.timestamp - a.timestamp
+      );
+      
+      // 결과 설정
+      setHistory(searchResults);
+      setHasMore(false); // 검색 결과에는 '더 로드하기' 비활성화
+      
     } catch (err) {
       console.error('Error searching history:', err);
       setError('검색 중 오류가 발생했습니다.');
@@ -144,14 +180,14 @@ export default function ImageHistoryPage() {
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-grow">
             <label htmlFor="search-prompt" className="block text-sm font-medium text-gray-700 mb-1">
-              프롬프트로 검색
+              닉네임 or 스타일 검색
             </label>
             <div className="flex">
               <input
                 type="text"
                 id="search-prompt"
                 className="flex-grow px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-fuchsia-500 focus:border-fuchsia-500"
-                placeholder="프롬프트 키워드 입력..."
+                placeholder="닉네임 or 스타일 키워드 입력..."
                 value={searchPrompt}
                 onChange={(e) => setSearchPrompt(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
