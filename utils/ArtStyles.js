@@ -3,7 +3,7 @@ const artStylePrompts = [
       id: "gogh",
       koreanName: "고흐",
       englishName: "Vincent van Gogh",
-      prompt: "Transform this image in the style of Vincent van Gogh. Use thick, visible brushstrokes with bold, swirling patterns. Create a vibrant color palette with strong yellows, blues, and greens. Emphasize emotional expression through exaggerated forms and dynamic movement. Include pronounced outlines and strong contrasts between light and shadow. Add that signature impasto texture with paint that appears to jump off the canvas. Capture the passionate, turbulent energy characteristic of van Gogh's masterpieces like 'Starry Night' and 'Sunflowers'."
+      prompt: "Create a portrait of the uploaded person in the style of Vincent van Gogh. Use expressive, thick brush strokes and a swirling background reminiscent of Van Gogh's 'Self-Portrait' (1889). Emphasize vibrant yet moody blues and greens, textured clothing with visible paint lines, and intense eyes that reflect inner emotion. The portrait should have a dynamic, painterly quality typical of Van Gogh's post-impressionist work."
     },
     {
         id: "giotto",
