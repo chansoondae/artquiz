@@ -27,7 +27,7 @@ export default function HighLevelQuizPage() {
     <main className="min-h-screen py-2 px-4">
       <header className="mb-12 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-2 text-fuchsia-900">전문가급 미술 퀴즈</h1>
-        <p className="text-lg text-gray-700">진정한 미술 애호가를 위한, 한층 깊이 있는 문제들</p>
+        <p className="text-lg text-gray-700">미술 애호가를 위한 고난이도 문제들</p>
         <div className="w-24 h-1 bg-gradient-to-r from-fuchsia-400 to-fuchsia-900 mx-auto mt-4"></div>
       </header>
       

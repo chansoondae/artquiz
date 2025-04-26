@@ -106,6 +106,15 @@ export default function ImageDetailClient({ id, initialImageData }) {
                     </div>
                   )}
                 </div>
+                
+                {/* styleId가 'free'일 경우 프롬프트 표시 */}
+                {imageData.styleId === 'free' && imageData.prompt && (
+                  <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">사용된 프롬프트</h3>
+                    <p className="text-gray-700">{imageData.prompt}</p>
+                  </div>
+                )}
+                
                 {imageData.generatedImageUrl && (
                   <div className="flex justify-center mt-2">
                     <a
