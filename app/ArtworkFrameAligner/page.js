@@ -25,8 +25,8 @@ export default function TransformImagePage() {
   return (
     <main className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <header className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-2 text-indigo-900">미술 작품 프레임 자동 정렬</h1>
-        <p className="text-lg text-gray-700">작품 사진의 기하학적 보정을 위한 도구</p>
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 text-indigo-900">프레임 자동 정렬</h1>
+        <p className="text-lg text-gray-700">작품 사진의 반듯한 보정을 위한 도구</p>
         <div className="w-24 h-1 bg-gradient-to-r from-indigo-400 to-indigo-900 mx-auto mt-4"></div>
       </header>
       
