@@ -8,7 +8,7 @@ export const metadata = {
   openGraph: {
     title: '미술 작품 프레임 자동 정렬 - 수평 수직 정확하게 보정하기',
     description: '미술 작품 사진의 프레임을 자동으로 감지하고 수평/수직을 정렬하여 완벽한 디스플레이를 위한 이미지를 만드세요.',
-    images: ['/images/transform-tool.jpg'],
+    images: ['/images/artworkframealigner.jpg'],
     url: 'https://artfrnd.com/artworkframealigner',
     type: 'website',
   },
@@ -33,7 +33,7 @@ export default function TransformImagePage() {
       <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">이 도구는 무엇인가요?</h2>
-          
+
           <ArtworkFrameAligner />
 
           <p className="text-gray-600 mb-3">
