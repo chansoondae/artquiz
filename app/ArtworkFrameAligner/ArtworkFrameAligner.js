@@ -3,8 +3,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-
-
+import { db } from '../../lib/firebase';
+import { doc, getDoc, updateDoc, increment, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const ArtworkFrameAligner = () => {
   const [originalImage, setOriginalImage] = useState(null);
@@ -67,7 +67,6 @@ const ArtworkFrameAligner = () => {
 
     clearDebugCanvases();
 
-
     const reader = new FileReader();
     reader.onload = (event) => {
       const img = new Image();
@@ -79,6 +78,43 @@ const ArtworkFrameAligner = () => {
       img.src = event.target.result;
     };
     reader.readAsDataURL(file);
+  };
+
+  // Firebase에 정렬 통계 업데이트 함수
+  const updateAlignmentStats = async () => {
+    try {
+      const statsRef = doc(db, 'statistics', 'numAlign');
+      const clientTimestamp = new Date(); // 클라이언트 타임스탬프 생성
+      
+      // 문서가 존재하는지 확인
+      const statsDoc = await getDoc(statsRef);
+      
+      if (statsDoc.exists()) {
+        // 문서가 존재하면 카운트 증가 및 최근 사용 시간 업데이트
+        await updateDoc(statsRef, {
+          count: increment(1),
+          lastUsed: serverTimestamp(),
+          usageLog: [...(statsDoc.data().usageLog || []), {
+            timestamp: clientTimestamp, // 클라이언트 타임스탬프 사용
+          }]
+        });
+      } else {
+        // 문서가 존재하지 않으면 새로 생성
+        await setDoc(statsRef, {
+          count: 1,
+          firstUsed: serverTimestamp(),
+          lastUsed: serverTimestamp(),
+          usageLog: [{
+            timestamp: clientTimestamp, // 클라이언트 타임스탬프 사용
+          }]
+        });
+      }
+      
+      console.log('Alignment usage statistics updated successfully');
+    } catch (error) {
+      console.error('Failed to update alignment statistics:', error);
+      // 통계 업데이트 실패해도 사용자 경험에 영향 없도록 에러 메시지 표시하지 않음
+    }
   };
 
   const processImage = () => {
@@ -262,6 +298,9 @@ const ArtworkFrameAligner = () => {
 
   const handleProcessClick = () => {
     setIsProcessing(true);
+    
+    // Firebase에 통계 업데이트
+    updateAlignmentStats();
   
     setTimeout(() => {
       processImage();
