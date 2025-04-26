@@ -9,7 +9,7 @@ import ImageGenerationHistory from '../components/ImageGenerationHistory';
 import artStyles from './../../utils/ArtStyles'; // Import art styles (adjust path as needed)
 import NicknameModal from '../components/NicknameModal'; // 닉네임 모달 컴포넌트 추가
 
-export default function ImageGenerator() {
+export default function ImageGencerator() {
   const router = useRouter();
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
