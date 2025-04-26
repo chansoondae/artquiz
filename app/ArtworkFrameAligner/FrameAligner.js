@@ -300,7 +300,7 @@ const ArtworkFrameAligner = () => {
     setIsProcessing(true);
     
     // Firebase에 통계 업데이트
-    updateAlignmentStats();
+    // updateAlignmentStats();
   
     setTimeout(() => {
       processImage();

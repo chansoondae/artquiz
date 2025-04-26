@@ -1,5 +1,5 @@
 //app/ArtworkFrameAligner/page.js
-import ArtworkFrameAligner from './ArtworkFrameAligner';
+import ArtworkFrameAligner from './FrameAligner';
 
 export const metadata = {
   title: '미술 작품 프레임 자동 정렬 - 수평 수직 정확하게 보정하기',
@@ -9,14 +9,14 @@ export const metadata = {
     title: '미술 작품 프레임 자동 정렬 - 수평 수직 정확하게 보정하기',
     description: '미술 작품 사진의 프레임을 자동으로 감지하고 수평/수직을 정렬하여 완벽한 디스플레이를 위한 이미지를 만드세요.',
     images: ['/images/transform-tool.jpg'],
-    url: 'https://artfrnd.com/transformimage',
+    url: 'https://artfrnd.com/artworkframealigner',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: '미술 작품 프레임 자동 정렬 - 수평 수직 정확하게 보정하기',
     description: '미술 작품 사진의 프레임을 자동으로 감지하고 수평/수직을 정렬하여 완벽한 디스플레이를 위한 이미지를 만드세요.',
-    images: ['/images/transform-tool.jpg'],
+    images: ['/images/artworkframealigner.jpg'],
   },
   keywords: ['미술', '작품', '프레임', '정렬', '보정', '수평', '수직', '이미지 처리', '자동 보정', '컴퓨터 비전'],
 };
@@ -33,6 +33,9 @@ export default function TransformImagePage() {
       <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-6 md:p-8">
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">이 도구는 무엇인가요?</h2>
+          
+          <ArtworkFrameAligner />
+
           <p className="text-gray-600 mb-3">
             미술 작품 사진을 찍었을 때 약간 기울어지거나 원근감이 왜곡되는 경우가 많습니다. 
             이 도구는 컴퓨터 비전 기술을 활용하여 작품의 프레임을 자동으로 감지하고, 
@@ -43,7 +46,7 @@ export default function TransformImagePage() {
           </p>
         </div>
         
-        <ArtworkFrameAligner />
+
       </div>
       
       <footer className="mt-12 text-center text-gray-500 text-sm">
