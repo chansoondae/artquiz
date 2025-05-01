@@ -58,7 +58,7 @@ const artStylePrompts = [
       id: "caravaggio",
       koreanName: "카라바조",
       englishName: "Michelangelo Merisi da Caravaggio",
-      prompt: "Transform this image in Caravaggio's dramatic Baroque style. Use extreme chiaroscuro (tenebrism) with intense contrast between light and shadow. Create theatrical spotlighting effects against a dark background. Depict subjects with unflinching realism and psychological intensity. Include dramatic emotional expressions and gestures. Focus on the central human drama with minimal background elements. Employ a rich, limited palette with deep reds, browns, and blacks punctuated by brilliant highlights. Present figures with powerful physicality and three-dimensionality. Capture the tension, drama, and raw humanity characteristic of Caravaggio's revolutionary approach to painting."
+      prompt: "Transform this image in Caravaggio's dramatic Baroque style. Michelangelo Merisi da Caravaggio"
     },
     {
       id: "matisse",
@@ -70,7 +70,7 @@ const artStylePrompts = [
       id: "modigliani",
       koreanName: "모딜리아니",
       englishName: "Amedeo Modigliani",
-      prompt: "Transform this image by elongating figures and faces with simplified, mask-like features. Create almond-shaped, often asymmetrical eyes that appear vacant or unseeing. Use long, graceful neck extensions and tilted heads. Apply a warm, muted palette of ochres, earth tones, and rich blues. Paint with simplified forms and minimal modeling that suggest volume through contour rather than shading. Include influences from African masks and Cycladic sculpture. Create a sense of melancholy isolation and spiritual intensity. Apply paint with visible brushstrokes in thin, transparent layers. Capture elegant simplification and psychological intimacy. Beautiful"
+      prompt: "Transform this image by Amedeo Modigliani. Expressionism. Beatuiful."
     },
     {
         id: "bernardbuffet",

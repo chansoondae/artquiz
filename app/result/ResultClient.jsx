@@ -1,3 +1,5 @@
+//app/result/ResultClient.jsx
+
 "use client";
 
 import { useState, useEffect } from 'react';

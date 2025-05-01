@@ -424,7 +424,8 @@ export default function ImageGencerator() {
             <div className="flex justify-center gap-4">
               <button
                 type="submit"
-                disabled={loading}
+                // disabled={loading}
+                disabled={true}
                 className={`gradient-button px-8 py-3 text-white font-bold rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-200 ${
                   loading ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
@@ -437,7 +438,7 @@ export default function ImageGencerator() {
                     </svg>
                     처리 중...
                   </span>
-                ) : selectedStyle ? `${selectedStyle.koreanName} 스타일로 생성하기` : '예술가 따라하기'}
+                ) : selectedStyle ? `${selectedStyle.koreanName} 스타일로 생성하기 (한도초과)` : '예술가 따라하기(한도 초과)'}
               </button>
               <button
                 type="button"
