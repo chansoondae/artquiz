@@ -83,7 +83,7 @@ export default function BottomNav() {
           </svg>
           <span className={styles.navText}>성격</span>
         </Link>
-        
+{/*         
         <div className={styles.navDivider}></div>
         
         <Link 
@@ -105,7 +105,7 @@ export default function BottomNav() {
             />
           </svg>
           <span className={styles.navText}>이미지</span>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
